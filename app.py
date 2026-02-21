@@ -30,7 +30,7 @@ def load_data():
 
     # Load trip data
     try:
-        df = pd.read_parquet(trip_data_url)
+        df = pd.read_parquet(trip_data_url).head(100_000)
     except Exception as e:
         st.error(f"Error loading trip data: {e}")
         st.stop()
