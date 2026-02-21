@@ -30,7 +30,10 @@ def load_data():
 
     # Load trip data
     try:
-        df = pd.read_parquet(trip_data_url).head(100_000)
+        df = pd.read_parquet(trip_data_url)
+        # Take a random sample of 100,000 rows (or less if dataset is smaller)
+        sample_size = min(100_000, len(df))
+        df = df.sample(n=sample_size, random_state=42).reset_index(drop=True)
     except Exception as e:
         st.error(f"Error loading trip data: {e}")
         st.stop()
@@ -174,7 +177,7 @@ bar_data["pickup_day_name"] = bar_data["pickup_day_of_week"].map(weekday_order)
 
 days_order = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 bar_pivot = bar_data.pivot(index="pickup_hour", columns="pickup_day_name", values="trips").fillna(0)
-bar_pivot = bar_pivot[days_order]  
+bar_pivot = bar_pivot.reindex(columns=days_order, fill_value=0)  # <-- FIXED
 
 fig = go.Figure()
 
