@@ -107,7 +107,8 @@ st.markdown("---")
 
 # r) Top 10 Pickup Zones
 csv_path = "data/raw/zonelookup.csv"
-zone_lookup = pd.read_csv(csv_path)
+zone_lookup_url = "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv"
+zone_lookup = pd.read_csv(zone_lookup_url)
 top_zones = filtered.groupby("PULocationID").size().reset_index(name="trips")
 top_zones = top_zones.merge(zone_lookup, left_on="PULocationID", right_on="LocationID")
 top_zones = top_zones.sort_values("trips", ascending=False).head(10)
