@@ -24,32 +24,40 @@ st.markdown("Explore NYC Yellow Taxi data with interactive charts and key metric
 # ----------------------- Load Data -----------------------
 @st.cache_data
 def load_data():
-    parquet_path = "data/raw/yellowtripdata.parquet"
+    # Dataset URLs
+    trip_data_url = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet"
+    zone_lookup_url = "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv"
+
+    # Load trip data
     try:
-        df = pd.read_parquet(parquet_path)
-    except FileNotFoundError:
-        st.error(f"Dataset not found! Place 'yellowtripdata.parquet' in '{parquet_path}'")
+        df = pd.read_parquet(trip_data_url)
+    except Exception as e:
+        st.error(f"Error loading trip data: {e}")
         st.stop()
 
+    # Load zone lookup
+    try:
+        zone_lookup = pd.read_csv(zone_lookup_url)
+    except Exception as e:
+        st.error(f"Error loading zone lookup: {e}")
+        st.stop()
 
-    #  Columns
+    # Preprocess trip data
     df["pickup_hour"] = df["tpep_pickup_datetime"].dt.hour
     df["pickup_day"] = df["tpep_pickup_datetime"].dt.dayofweek
     df["pickup_date"] = df["tpep_pickup_datetime"].dt.date
-    df["trip_duration_min"] = (
-        df["tpep_dropoff_datetime"] - df["tpep_pickup_datetime"]
-    ).dt.total_seconds() / 60
+    df["trip_duration_min"] = (df["tpep_dropoff_datetime"] - df["tpep_pickup_datetime"]).dt.total_seconds() / 60
     df["tip_pct"] = (df["tip_amount"] / df["fare_amount"] * 100).fillna(0)
 
-    # Clean 
+    # Clean data
     df = df[(df["fare_amount"] > 0) & (df["fare_amount"] < 200)]
     df = df[(df["trip_distance"] > 0) & (df["trip_distance"] < 50)]
     df = df[(df["trip_duration_min"] > 1) & (df["trip_duration_min"] < 180)]
 
-    return df.reset_index(drop=True)
+    return df.reset_index(drop=True), zone_lookup
 
-
-df = load_data()
+# Load data
+df, zone_lookup = load_data()
 
 # ----------------------- Sidebar -----------------------
 st.sidebar.header("Filters")
