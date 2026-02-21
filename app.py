@@ -193,5 +193,5 @@ fig.update_layout(
     xaxis=dict(tickmode='linear', tick0=0, dtick=1)
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width='stretch') 
 st.markdown("There are more trips during weekday mornings and evenings because of work travel. Weekend nights are also busy due to social activities. Travel patterns clearly change between weekdays and weekends.")
