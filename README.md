@@ -7,7 +7,7 @@ An interactive Streamlit dashboard that explores NYC Yellow Taxi trip data. The 
 ## 🌐 Live Dashboard
 
 Deployed App URL:  
-👉 https://your-streamlit-app-url-here.streamlit.app  
+👉 https://comp3610assignment1-xwuy9wogwfdhgbgahjmjkb.streamlit.app/
 
 *(Replace this with your actual Streamlit Community Cloud URL before submission.)*
 
@@ -53,7 +53,7 @@ README.md              # Project documentation
 
 ### 1️⃣ Clone the Repository
 
-git clone https://github.com/your-username/your-repository-name.git  
+git clone https://github.com/izDeLaMo/COMP3610_Assignment1.git  
 cd your-repository-name  
 
 ### 2️⃣ Create a Virtual Environment (Recommended)
